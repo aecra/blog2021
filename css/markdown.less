@@ -1,0 +1,171 @@
+.markdown {
+  font-size: 16px;
+  background: #fff;
+  // color: #555;
+  padding: 20px 30px 50px;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    position: relative;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    line-height: 1.4em;
+  }
+  h1 {
+    font-size: 2em;
+    line-height: 1.2em;
+  }
+  h2 {
+    font-size: 1.5em;
+    line-height: 1.225em;
+  }
+  h3 {
+    font-size: 1.3em;
+    line-height: 1.43em;
+  }
+  h4 {
+    font-size: 1.2em;
+  }
+  h5 {
+    font-size: 1em;
+  }
+  h6 {
+    font-size: 1em;
+    color: #999;
+  }
+  hr {
+    border: 1px solid #ddd;
+  }
+  a {
+    text-decoration: none;
+    color: #258fb8;
+  }
+  a:hover,
+  a:active {
+    text-decoration: underline;
+  }
+  ul,
+  ol {
+    padding-left: 2em;
+  }
+  .task-list {
+    padding-left: 2em;
+  }
+  .task-list-item {
+    padding-left: 1.6em;
+  }
+  .task-list-item input {
+    top: 3px;
+    left: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  table th {
+    font-weight: bold;
+    border-bottom: 3px solid #ddd;
+    padding-bottom: 0.5em;
+  }
+  table td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+  }
+  blockquote {
+    border-left: 5px solid #ddd;
+    padding-left: 0.5em;
+    color: #555;
+    font-size: 15px;
+  }
+  blockquote blockquote {
+    padding-right: 0;
+  }
+  .md-fences,
+  code,
+  tt {
+    color: #e9eded;
+  }
+  .md-fences {
+    margin: 15px auto;
+    padding: 0.7em 1em;
+    text-shadow: none;
+  }
+  img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+  }
+
+  // 代码高亮
+  .hljs-comment,
+  .hljs-quote {
+    color: #b6b18b;
+  }
+  .hljs-deletion,
+  .hljs-name,
+  .hljs-regexp,
+  .hljs-selector-class,
+  .hljs-selector-id,
+  .hljs-tag,
+  .hljs-template-variable,
+  .hljs-variable {
+    color: #eb3c54;
+  }
+  .hljs-built_in,
+  .hljs-builtin-name,
+  .hljs-link,
+  .hljs-literal,
+  .hljs-meta,
+  .hljs-number,
+  .hljs-params,
+  .hljs-type {
+    color: #e7ce56;
+  }
+  .hljs-attribute {
+    color: #ee7c2b;
+  }
+  .hljs-addition,
+  .hljs-bullet,
+  .hljs-string,
+  .hljs-symbol {
+    color: #4fb4d7;
+  }
+  .hljs-section,
+  .hljs-title {
+    color: #78bb65;
+  }
+  .hljs-keyword,
+  .hljs-selector-tag {
+    color: #b45ea4;
+  }
+  .hljs,
+  pre {
+    display: block;
+    overflow-x: auto;
+    background: #1c1d21;
+    color: #ffffff;
+    border-radius: 0;
+    border: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    &::-webkit-scrollbar-thumb {
+      display: none;
+    }
+    &::-webkit-scrollbar-track {
+      display: none;
+    }
+  }
+  .hljs-emphasis {
+    font-style: italic;
+  }
+  .hljs-strong {
+    font-weight: 700;
+  }
+}

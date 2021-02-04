@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="cn-zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登录 | AECRA 博客后台</title>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./layui/dist/css/layui.css" />
+    <link rel="stylesheet" href="./css/login.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="gaussian-blur"></div>
+      <div class="layui-container">
+        <div class="form-outer">
+          <div class="form-container">
+            <div class="title">登录</div>
+            <div class="form">
+              <form class="layui-form" action="">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">账号</label>
+                  <div class="layui-input-block">
+                    <input id="username" type="text" name="username" required lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input" />
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">密码</label>
+                  <div class="layui-input-inline">
+                    <input id="password" type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" />
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">对不对呢？</div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="login">登录</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./layui/dist/layui.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
+  <script>
+    window.onload = function () {
+      // 登陆验证
+      fetch("./api/check-login.php", {
+        //请求方法
+        method: "POST",
+        credentials: "include",
+        //请求体
+        body: "login-check",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status == 0) {
+            window.location.href = "./";
+          }
+        })
+        .catch((err) => {
+          // do nothing
+        });
+    };
+
+    layui.use("form", function () {
+      var form = layui.form;
+
+      //监听提交
+      form.on("submit(login)", function (data) {
+        var formData = data.field;
+        console.log(formData);
+
+        //表单校验
+        if (!new RegExp("^[a-zA-Z][a-zA-Z0-9_]{4,15}$").test(formData.username)) {
+          layer.tips("格式错误", "#username");
+          return false;
+        }
+        // if (!new RegExp("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\\W]{6,18}$").test(formData.password)) {
+        //   layer.tips("格式错误", "#password");
+        //   return false;
+        // }
+
+        formData.password = md5(formData.password);
+        console.log(formData);
+
+        var index = layer.load(2);
+        fetch("./api/login.php", {
+          //请求方法
+          method: "POST",
+          credentials: "include",
+          //请求体
+          body: JSON.stringify(formData),
+        })
+          .then((response) => {
+            layer.close(index);
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data.status == 0) {
+              window.location.href = "./index.html";
+            } else if (data.status == 1) {
+              // 账号不存在
+              layer.tips("账号不存在", "#username");
+            } else if (data.status == 2) {
+              // 密码错误
+              layer.tips("密码错误", "#password");
+            } else {
+              // 未知状态码
+              layer.msg("未知状态码", { icon: 2 });
+            }
+          })
+          .catch((err) => {
+            layer.msg("数据异常", { icon: 2 });
+          });
+        return false;
+      });
+    });
+  </script>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="cn-zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文章列表 | AECRA 博客后台</title>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./layui/dist/css/layui.css" />
+    <link rel="stylesheet" href="./css/article-list.css" />
+  </head>
+  <body>
+    <div class="previer">
+      <div class="img" style="background-image: url(./images/background.png)"></div>
+
+      <div class="content">
+        <div class="layui-container inner">
+          <div class="title">
+            <p>AECRA 博客后台</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-container">
+      <div class="list-title">文章列表</div>
+      <div class="article-list">
+        <!-- start -->
+        <div class="item">
+          <div class="title">
+            <a href="">c++从入门到入土</a>
+          </div>
+          <div class="time">
+            <span>发布时间：2021-1-1</span>
+            <span>修改时间：2021-1-2</span>
+          </div>
+          <div class="state">
+            <form class="layui-form top-form" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">置顶文章</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="top" lay-filter="top" value="1" lay-skin="switch" />
+                </div>
+              </div>
+            </form>
+            <form class="layui-form hide-form" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">隐藏文章</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="hide" lay-filter="hide" value="1" lay-skin="switch" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- end -->
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="layui-container">
+          <div class="left layui-col-xs12 layui-col-sm12 layui-col-md8 layui-col-lg8">
+            <div class="logo layui-col-xs12 layui-col-sm4 layui-col-md5 layui-col-lg4">
+              <img src="../logo.png" alt="logo" />
+            </div>
+            <div class="description layui-col-xs12 layui-col-sm8 layui-col-md7 layui-col-lg8">
+              <p class="title">AECRA 博客后台</p>
+              <p class="content">aecra新一代博客后台系统，突出简洁，自适应开发，使用markdown处理文章，更加轻量化。</p>
+              <p class="content">© 2017-2021 www.aecra.cn 版权所有。</p>
+            </div>
+          </div>
+          <div class="right layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg4"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./layui/dist/layui.js"></script>
+  <script>
+    window.onload = function () {
+      // 登陆验证
+      fetch("./api/check-login.php", {
+        //请求方法
+        method: "POST",
+        credentials: "include",
+        //请求体
+        body: "login-check",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status != 0) {
+            window.location.href = "./login.html";
+          }
+        })
+        .catch((err) => {
+          window.location.href = "./login.html";
+        });
+
+      fetch("./api/article-list.php", {
+        //请求方法
+        method: "POST",
+        credentials: "include",
+        //请求体
+        body: "article-list",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          addToList(data);
+        })
+        .catch((err) => {
+          layer.msg("数据异常", { icon: 2 });
+        });
+
+      function addToList(data) {
+        var html_str = "";
+        for (let i = 0; i < data.length; i++) {
+          var element = data[i];
+          html_str += `<div class="item">
+          <div class="title">
+            <a href="./update.html?id=`+ element.id +`">`+ element.title +`</a>
+          </div>
+          <div class="time">
+            <span>发布时间：`+ element.publish_time +`</span>
+            <span>修改时间：`+ element.update_time +`</span>
+          </div>
+          <div class="state">
+            <form class="layui-form top-form" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">置顶文章</label>
+                <div class="layui-input-block">
+                  <input `+ (element.toped=="1"?"checked":"") +` type="checkbox" name="top" lay-filter="top" value="`+ element.id +`" lay-skin="switch" />
+                </div>
+              </div>
+            </form>
+            <form class="layui-form hide-form" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">隐藏文章</label>
+                <div class="layui-input-block">
+                  <input `+ (element.hided=="1"?"checked":"") +` type="checkbox" name="hide" lay-filter="hide" value="`+ element.id +`" lay-skin="switch" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>`;
+        }
+        document.getElementsByClassName("article-list")[0].innerHTML = html_str;
+      }
+
+      layui.use("form", function () {
+        var form = layui.form;
+
+        form.on("switch(top)", function (data) {
+          var formData = {};
+          formData.titleId = data.value;
+          formData.change = "top";
+          formData.status = data.elem.checked;
+
+          statusChangeAjax(formData);
+        });
+        form.on("switch(hide)", function (data) {
+          var formData = {};
+          formData.titleId = data.value;
+          formData.change = "hide";
+          formData.status = data.elem.checked;
+
+          statusChangeAjax(formData);
+        });
+
+        function statusChangeAjax(dataOfSend) {
+          // 向后台传递表单数据
+          fetch("./api/status-change.php", {
+            //请求方法
+            method: "POST",
+            credentials: "include",
+            //请求体
+            body: JSON.stringify(dataOfSend),
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              if (data.status == 0) {
+                layer.msg("设置成功", { icon: 1 });
+              } else {
+                layer.msg("设置失败", { icon: 2 });
+                window.location.href = "./article-list.html";
+              }
+            })
+            .catch((err) => {
+              layer.msg("数据异常", { icon: 2 });
+            });
+        }
+      });
+    };
+  </script>
+</html>

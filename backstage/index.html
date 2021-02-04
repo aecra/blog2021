@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="cn-zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AECRA 博客后台</title>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./layui/dist/css/layui.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <div class="previer">
+      <div class="img" style="background-image: url(./images/background.png)"></div>
+
+      <div class="content">
+        <div class="layui-container inner">
+          <div class="title">
+            <p>AECRA 博客后台</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-container">
+      <div class="items">
+        <div class="item layui-col-xs6 layui-col-sm4 layui-col-md3 layui-col-lg2">
+          <a href="./article-list.html">
+            <div class="inner">
+              <img class="inner-img" src="./images/article-list.png" alt="文章列表" />
+              <p class="inner-title">文章列表</p>
+            </div>
+          </a>
+        </div>
+        <div class="item layui-col-xs6 layui-col-sm4 layui-col-md3 layui-col-lg2">
+          <a href="./publish.html">
+            <div class="inner">
+              <img class="inner-img" src="./images/publish.png" alt="发布文章" />
+              <p class="inner-title">发布文章</p>
+            </div>
+          </a>
+        </div>
+        <div class="item layui-col-xs6 layui-col-sm4 layui-col-md3 layui-col-lg2">
+          <a href="./api/login-out.php">
+            <div class="inner">
+              <img class="inner-img" src="./images/login-out.png" alt="退出登录" />
+              <p class="inner-title">退出登录</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="layui-container">
+          <div class="left layui-col-xs12 layui-col-sm12 layui-col-md8 layui-col-lg8">
+            <div class="logo layui-col-xs12 layui-col-sm4 layui-col-md5 layui-col-lg4">
+              <img src="../logo.png" alt="logo" />
+            </div>
+            <div class="description layui-col-xs12 layui-col-sm8 layui-col-md7 layui-col-lg8">
+              <p class="title">AECRA 博客后台</p>
+              <p class="content">aecra新一代博客后台系统，突出简洁，自适应开发，使用markdown处理文章，更加轻量化。</p>
+              <p class="content">© 2017-2021 www.aecra.cn 版权所有。</p>
+            </div>
+          </div>
+          <div class="right layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg4"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./layui/dist/layui.js"></script>
+  <script>
+    window.onload = function () {
+      // 登陆验证
+      fetch("./api/check-login.php", {
+        //请求方法
+        method: "POST",
+        credentials: "include",
+        //请求体
+        body: "login-check",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status != 0) {
+            window.location.href = "./login.html";
+          }
+        })
+        .catch((err) => {
+          window.location.href = "./login.html";
+        });
+    };
+    setInterval(function () {
+      var img = document.getElementsByClassName("inner-img")[0];
+      var titles = document.getElementsByClassName("inner-title");
+      for (i = 0; i < titles.length; i++) {
+        titles[i].style.lineHeight = img.clientHeight / 3 + "px";
+        // console.log(titles[i].style.lineHeight,img.style.height);
+      }
+    }, 200);
+  </script>
+</html>

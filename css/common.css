@@ -1,0 +1,140 @@
+body {
+  background-color: #FAFAFB;
+}
+.side {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  position: sticky;
+  top: 20px;
+}
+@media (max-width: 992px) {
+  .side {
+    display: none;
+  }
+}
+.side .card-title {
+  font-size: 20px;
+  padding: 10px;
+  position: relative;
+}
+.side .card-title img {
+  width: 24px;
+}
+.side .card-title::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+  width: 130px;
+  height: 2px;
+  background-color: #aaaaaa;
+}
+.side .about-me {
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+.side .about-me .portrait {
+  padding: 20px;
+  text-align: center;
+}
+.side .about-me .portrait img {
+  width: 200px;
+  border-radius: 100px;
+  transition: 0.4s;
+  cursor: pointer;
+}
+.side .about-me .portrait img:hover {
+  transform: scale(1.05);
+}
+.side .about-me .name {
+  text-align: center;
+  font-size: 22px;
+  margin: 20px 0;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.side .about-me .name:hover {
+  color: #6c96df;
+}
+.side .hot-article {
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+.side .hot-article .card {
+  width: 100%;
+  padding: 10px;
+}
+.side .hot-article .card img {
+  width: 16px;
+}
+.side .hot-article .card a {
+  color: #000;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.side .hot-article .card a:hover {
+  color: #6c96df;
+}
+.to-top {
+  display: none;
+  position: fixed;
+  background-color: #9688bb;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border-radius: 30px;
+  bottom: 30px;
+  right: 30px;
+  z-index: 2;
+  padding: 15px;
+}
+.to-top img {
+  width: 30px;
+}
+.to-top:hover img {
+  transform: rotateY(360deg);
+  transition: 1s;
+}
+.footer {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 30px 0;
+  background-color: #06060b;
+  color: #60606d;
+}
+.footer img {
+  width: 100%;
+}
+.footer .title {
+  font-size: 32px;
+  line-height: 32px;
+  padding: 30px 0;
+  color: #fff;
+}
+.footer .content {
+  line-height: 24px;
+}
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/*滚动条样式*/
+body::-webkit-scrollbar {
+  width: 4px;
+  /*height: 4px;*/
+}
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
