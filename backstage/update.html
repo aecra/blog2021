@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="cn-zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文章修改 | AECRA 博客后台</title>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./layui/dist/css/layui.css" />
+    <link rel="stylesheet" href="./css/publish.css" />
+  </head>
+  <body>
+    <div class="previer">
+      <div class="img" style="background-image: url(./images/background.png)"></div>
+
+      <div class="content">
+        <div class="layui-container inner">
+          <div class="title">
+            <p>博客文章修改</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-container">
+      <fieldset class="layui-elem-field form-card">
+        <legend>修改文章</legend>
+        <div class="layui-field-box">
+          <form id="form" class="layui-form" lay-filter="form">
+            <div class="layui-form-item">
+              <label class="layui-form-label">文章标题</label>
+              <div class="layui-input-block">
+                <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">文章标签</label>
+              <div class="layui-input-block">
+                <input type="text" name="tags" required lay-verify="required" placeholder="请输入标签，用，分隔，每个标签不少于两个字符不多于15个字符" autocomplete="off" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form item">
+              <label class="layui-form-label">修改图片</label>
+              <div class="layui-input-block">
+                <button type="button" class="layui-btn" id="img-upload"><i class="layui-icon">&#xe67c;</i>修改图片</button>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">置顶</label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="top" value="true" lay-skin="switch" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">隐藏</label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="hide" value="true" lay-skin="switch" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">内容</label>
+              <div class="layui-input-block">
+                <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formsub">立即提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="layui-container">
+          <div class="left layui-col-xs12 layui-col-sm12 layui-col-md8 layui-col-lg8">
+            <div class="logo layui-col-xs12 layui-col-sm4 layui-col-md5 layui-col-lg4">
+              <img src="../logo.png" alt="logo" />
+            </div>
+            <div class="description layui-col-xs12 layui-col-sm8 layui-col-md7 layui-col-lg8">
+              <p class="title">AECRA 博客后台</p>
+              <p class="content">aecra新一代博客后台系统，突出简洁，自适应开发，使用markdown处理文章，更加轻量化。</p>
+              <p class="content">© 2017-2021 www.aecra.cn 版权所有。</p>
+            </div>
+          </div>
+          <div class="right layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-lg4"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./layui/dist/layui.js"></script>
+  <script>
+    window.onload = function () {
+      // 登陆验证
+      fetch("./api/check-login.php", {
+        //请求方法
+        method: "POST",
+        credentials: "include",
+        //请求体
+        body: "login-check",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status != 0) {
+            window.location.href = "./login.html";
+          }
+        })
+        .catch((err) => {
+          window.location.href = "./login.html";
+        });
+
+      layui.use(["form", "upload"], function () {
+        var form = layui.form;
+        var upload = layui.upload;
+        var imgUrl = "";
+        var published = false;
+        var originData;
+
+        // 获取文章信息
+        fetch("./api/update-init-data.php", {
+          //请求方法
+          method: "POST",
+          credentials: "include",
+          //请求体
+          body: JSON.stringify(getGetParam()),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (JSON.stringify(data) === "{}") {
+              window.location.href = "./";
+            } else {
+              originData = data;
+              //给表单赋值
+              form.val("form", {
+                title: data["title"],
+                tags: data["tags"],
+                top: data["toped"] == "1" ? true : false,
+                hide: data["hided"] == "1" ? true : false,
+                content: data["content"],
+              });
+              imgUrl = data["img_url"];
+            }
+          })
+          .catch((err) => {
+            console.log("catch error!", err);
+            window.location.href = "./login.html";
+          });
+
+        function getGetParam() {
+          var url = window.document.location.href.toString();
+          var u = url.split("?");
+          if (typeof u[1] == "string") {
+            u = u[1].split("&");
+            var get = {};
+            for (var i in u) {
+              var j = u[i].split("=");
+              get[j[0]] = j[1];
+            }
+            return get;
+          } else {
+            return {};
+          }
+        }
+
+        // 图片上传事件处理
+        var indexUpLoad;
+        var uploadInst = upload.render({
+          elem: "#img-upload",
+          url: "./api/cover-img-upload.php",
+          accept: "images",
+          acceptMime: "image/*",
+          before: function () {
+            indexUpLoad = layer.load(2);
+          },
+          done: function (res) {
+            layer.close(indexUpLoad);
+            /*
+             * 0成功
+             * 1登陆状态失效
+             * 2图片上传错误
+             */
+            if (res.status == 0) {
+              layer.msg("图片上传成功", { icon: 1 });
+              imgUrl = res.src;
+            } else if (res.status == 1) {
+              layer.msg("登录状态失效", { icon: 2 });
+            } else {
+              layer.msg("后台图片上传失败", { icon: 2 });
+            }
+          },
+          error: function () {
+            layer.close(indexUpLoad);
+            layer.msg("请求异常", { icon: 2 });
+          },
+        });
+
+        // 表单提交事件处理
+        form.on("submit(formsub)", function (data) {
+          if (published) {
+            layer.msg("文章已发布，请勿重复提交", { icon: 7 });
+            return false;
+          }
+
+          published = true;
+          var formData = data.field;
+          formData.top = formData.top || "false";
+          formData.hide = formData.hide || "false";
+          formData.imgUrl = imgUrl;
+
+          //表单校验，处理tags
+          if (!new RegExp("^.{1,70}$").test(formData.title)) {
+            layer.msg("文章标题过长", { icon: 2 });
+            return (published = false);
+          }
+          {
+            var result = formData.tags.split(/[,，]/);
+            formData.tags = [];
+            for (var i = 0; i < result.length; i++) {
+              result[i] = result[i].replace(/(^\s*)|(\s*$)/g, "");
+              if (result[i].length >= 2 && result[i].length <= 15) {
+                formData.tags.push(result[i]);
+              }
+            }
+            if (result.length != formData.tags.length) {
+              layer.msg("请正确输入标签", { icon: 2 });
+              return (published = false);
+            }
+          }
+          if (formData.imgUrl == "") {
+            layer.msg("未上传图片", { icon: 2 });
+            return (published = false);
+          }
+          if (formData.content.length < 50) {
+            layer.msg("文章内容过少", { icon: 2 });
+            return (published = false);
+          }
+
+          // 向后台传递表单数据
+          var index = layer.load(2);
+          fetch("./api/update.php", {
+            //请求方法
+            method: "POST",
+            credentials: "include",
+            //请求体
+            body: JSON.stringify([originData,formData]),
+          })
+            .then((response) => {
+              layer.close(index);
+              return response.json();
+            })
+            .then((data) => {
+              if (data.status == 0) {
+                layer.msg("修改成功", { icon: 1 });
+                setTimeout(function () {
+                  window.location.href = "./article-list.html";
+                }, 500);
+              } else if (data.status == 1) {
+                layer.msg("登陆状态失效", { icon: 2 });
+                published = false;
+              }else if (data.status == 2){
+                layer.msg("未收到数据", { icon: 2 });
+                published = false;
+              }else if (data.status == 4){
+                layer.msg("没有该文章的修改权限", { icon: 2 });
+                published = false;
+              } else {
+                layer.msg("修改失败", { icon: 2 });
+                published = false;
+              }
+            })
+            .catch((err) => {
+              layer.msg("数据异常", { icon: 2 });
+              published = false;
+            });
+
+          return false;
+        });
+      });
+    };
+  </script>
+</html>

@@ -1,0 +1,143 @@
+.previer {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+@media (min-width: 992px) {
+  .previer {
+    height: 450px;
+  }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .previer {
+    height: 300px;
+  }
+}
+@media (max-width: 768px) {
+  .previer {
+    height: 250px;
+  }
+}
+.previer .img {
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  filter: blur(8px);
+}
+.previer .content {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+}
+.previer .content .inner {
+  height: 100%;
+}
+.previer .content .inner .title {
+  font-size: 36px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.previer .content .inner .title p {
+  transition: 0.2s;
+  cursor: pointer;
+  margin: 0;
+}
+.previer .content .inner .title p:hover {
+  color: #6c96df;
+}
+.article-card {
+  position: relative;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+.article-card .img {
+  background-color: chartreuse;
+  overflow: hidden;
+}
+.article-card .img img {
+  width: 100%;
+  transition: 0.2s;
+}
+@media (min-width: 992px) {
+  .article-card .img img:hover {
+    transform: scale(1.05);
+  }
+}
+.article-card .content {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+}
+.article-card .content .title {
+  font-size: 24px;
+  padding: 10px;
+}
+.article-card .content .title a {
+  color: #000;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.article-card .content .title a:hover {
+  color: #6c96df;
+}
+.article-card .content .tags {
+  display: flex;
+}
+.article-card .content .tags .tag {
+  background-color: #6c96df;
+  color: #fff;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+.article-card .content .tags .tag a {
+  color: #fff;
+  text-decoration: none;
+}
+.article-card .content .tags .tag:hover {
+  background-color: #9688bb;
+}
+.article-card .content .time {
+  margin-top: 10px;
+  display: flex;
+}
+.article-card .content .time span {
+  transition: 0.2s;
+}
+.article-card .content .time span img {
+  width: 16px;
+}
+.article-card .content .time span:hover {
+  color: #6c96df;
+  cursor: pointer;
+}
+.read-more {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  box-shadow: 0 0 5px #aaaaaa;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+  letter-spacing: 3px;
+}
+.read-more:hover {
+  letter-spacing: 8px;
+}
+.exist-more {
+  background-color: #6c96df;
+}
+.no-more {
+  background-color: #9688bb;
+}

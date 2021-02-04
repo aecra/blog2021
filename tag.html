@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="aecra，博客，blog" />
+    <meta name="description" content="一个不愿意放弃博客而继续码代码写博客的沙雕的博客，记录学习内容，分享沙雕思想" />
+    <title>标签 | AECRA BLOG</title>
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="./css/tag.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="shortcut icon" href="./logo.png" type="image/x-icon" />
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <div class="previer">
+      <div class="img" style="background-image: url(./images/background.png)"></div>
+
+      <div class="content">
+        <div class="container inner">
+          <div class="title">
+            <p class="previer-title"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <section class="side col-md-4 col-lg-4">
+          <div class="about-me">
+            <div class="portrait">
+              <a href="./index.html">
+                <img src="./images/portrait.png" alt="my portrait" />
+              </a>
+            </div>
+            <div class="name">AECRA的博客</div>
+          </div>
+
+          <div id="hot-article" class="hot-article">
+            <div class="card-title">
+              <img src="./images/item-blue.png" />
+              <span>热门文章</span>
+            </div>
+            <div v-for="item in articleList" class="card">
+              <img src="./images/hot-red.png" />
+              <a :href="'./article.html?id='+item.id">{{item.title}}</a>
+            </div>
+          </div>
+        </section>
+        <section id="article-cards" class="article-cards col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <div v-for="item in articleList" :class="item.toped=='1'?'toped':''" class="article-card">
+            <div class="img">
+              <a :href="'./article.html?id='+item.id">
+                <img :src="item.img_url+'?imageMogr2/crop/720x400/gravity/center'" alt="article image" />
+              </a>
+            </div>
+            <div class="content">
+              <div class="title">
+                <a :href="'./article.html?id='+item.id">{{item.title}}</a>
+              </div>
+
+              <div class="tags">
+                <div v-for="item2 in item.tags" class="tag">
+                  <a :href="'./tag.html?tag='+item2">{{item2}}</a>
+                </div>
+              </div>
+
+              <div class="time">
+                <span>
+                  <img src="./images/time-blue.png" />
+                  {{item.publish_time.slice(0,10)}} PUBLISH
+                </span>
+                &nbsp;&nbsp;
+                <span>
+                  <img src="./images/time-blue.png" />
+                  {{item.update_time.slice(0,10)}} UPDATE
+                </span>
+              </div>
+            </div>
+          </div>
+          <div v-on:click="getMoreArticles" :class="nomore?'no-more':'exist-more'" class="read-more">
+            <span>{{nomore?'NO MORE':'READ MORE'}}</span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="to-top">
+      <img src="./images/top-white.png" />
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="left col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="logo col-xs-12 col-sm-4 col-md-5 col-lg-4">
+              <img src="./logo.png" alt="logo" />
+            </div>
+            <div class="description col-xs-12 col-sm-8 col-md-7 col-lg-8">
+              <p class="title">AECRA | BLOG</p>
+              <p class="content">一个不愿意放弃博客而继续码代码写博客的沙雕的博客，记录学习内容，分享沙雕思想</p>
+              <p class="content">© 2017-2021 www.aecra.cn 版权所有。</p>
+            </div>
+          </div>
+          <div class="right col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/background.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/tag.js"></script>
+    <script></script>
+  </body>
+</html>
