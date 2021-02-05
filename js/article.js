@@ -32,6 +32,14 @@ var vmArticle = new Vue({
   },
 });
 
+new Valine({
+  el: "#vcomments",
+  appId: "vaD1lefArFYNfubMY5J8Su9K-gzGzoHsz",
+  appKey: "iVLB6rYIV43vj9HHmwKlTUQd",
+  path: window.location.href,
+  avatar: "identicon",
+});
+
 function setArticleContent(data) {
   // markdown解析
   // https://github.com/markdown-it/markdown-it
@@ -72,7 +80,7 @@ function setArticleContent(data) {
   md = window.markdownit(defaults);
   var result = md.render(data);
 
-  document.getElementsByClassName("article-card")[0].innerHTML = result;
+  document.getElementsByClassName("markdown")[0].innerHTML = result;
 }
 
 function setPageTitle(data) {
