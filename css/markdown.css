@@ -147,8 +147,9 @@
   overflow-x: auto;
   background: #1c1d21;
   color: #ffffff;
-  border-radius: 0;
-  border: none;
+  padding: 1em;
+  font-size: 14px;
+  line-height: 20px;
 }
 .markdown .hljs::-webkit-scrollbar,
 .markdown pre::-webkit-scrollbar {
