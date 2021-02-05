@@ -27,7 +27,7 @@
 
     <div class="container">
       <div class="row">
-        <section class="side col-md-4 col-lg-4">
+        <section class="side d-none d-sm-none col-md-4 d-md-block col-lg-4 d-lg-block col-xl-4 d-xl-block">
           <div class="about-me">
             <div class="portrait">
               <a href="./index.html">
@@ -48,7 +48,7 @@
             </div>
           </div>
         </section>
-        <section id="article-cards" class="article-cards col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <section id="article-cards" class="article-cards col-sm-12 col-md-8 col-lg-8 clo-xl-8">
           <div v-for="item in articleList" :class="item.toped=='1'?'toped':''" class="article-card">
             <div class="img">
               <a :href="'./article.html?id='+item.id">
@@ -93,17 +93,17 @@
     <div class="footer">
       <div class="container">
         <div class="row">
-          <div class="left col-xs-12 col-sm-12 col-md-8 col-lg-8">
-            <div class="logo col-xs-12 col-sm-4 col-md-5 col-lg-4">
+          <div class="left row col-sm-12 col-md-12 col-lg-8 col-xl-8">
+            <div class="logocol-sm-12 d-none d-md-block d-lg-block d-xl-block col-md-4 col-lg-4 col-xl-4">
               <img src="./logo.png" alt="logo" />
             </div>
-            <div class="description col-xs-12 col-sm-8 col-md-7 col-lg-8">
+            <div class="description col-sm-12 col-md-8 col-lg-8 col-xl-8">
               <p class="title">AECRA | BLOG</p>
               <p class="content">一个不愿意放弃博客而继续码代码写博客的沙雕的博客，记录学习内容，分享沙雕思想</p>
               <p class="content">© 2017-2021 www.aecra.cn 版权所有。</p>
             </div>
           </div>
-          <div class="right col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+          <div class="right col-sm-12 col-md-12 col-lg-4 col-xl-4"></div>
         </div>
       </div>
     </div>
