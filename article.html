@@ -20,6 +20,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
   </head>
   <body>
     <div id="previer" class="previer">
@@ -76,7 +77,10 @@
             </div>
           </div>
         </section>
-        <section class="markdown article-card col-sm-12 col-md-8 col-lg-8 clo-xl-8"></section>
+        <section class="article-card col-sm-12 col-md-8 col-lg-8 clo-xl-8">
+          <div class="markdown"></div>
+          <div id="vcomments" class="vcomments"></div>
+        </section>
       </div>
     </div>
 
