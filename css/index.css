@@ -189,7 +189,33 @@
     letter-spacing: 2px;
   }
   .previer .else .to-down {
-    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+  }
+  @keyframes to-down {
+    0% {
+      color: #fff;
+      opacity: 1;
+      margin-bottom: 15px;
+    }
+    50% {
+      color: #fff;
+      opacity: 1;
+      margin-bottom: 15px;
+    }
+    100% {
+      color: #6c96df;
+      opacity: 0;
+      margin-bottom: 0.1;
+    }
+  }
+  .previer .else .to-down img {
+    cursor: pointer;
+    width: 23px;
+    animation: to-down 2s infinite;
   }
 }
 @media (max-width: 768px) {
@@ -241,7 +267,33 @@
     content: "碧山人来，清酒深杯";
   }
   .previer .else .to-down {
-    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+  }
+  @keyframes to-down {
+    0% {
+      color: #fff;
+      opacity: 1;
+      margin-bottom: 15px;
+    }
+    50% {
+      color: #fff;
+      opacity: 1;
+      margin-bottom: 15px;
+    }
+    100% {
+      color: #6c96df;
+      opacity: 0;
+      margin-bottom: 0.1;
+    }
+  }
+  .previer .else .to-down img {
+    cursor: pointer;
+    width: 23px;
+    animation: to-down 2s infinite;
   }
 }
 .toped:before {
