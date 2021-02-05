@@ -45,7 +45,8 @@
   <script src="./layui/dist/layui.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
   <script>
-    window.onload = function () {
+    checkLogin();
+    function checkLogin() {
       // 登陆验证
       fetch("./api/check-login.php", {
         //请求方法
@@ -65,7 +66,7 @@
         .catch((err) => {
           // do nothing
         });
-    };
+    }
 
     layui.use("form", function () {
       var form = layui.form;
