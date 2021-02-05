@@ -76,7 +76,8 @@
   </body>
   <script src="./layui/dist/layui.js"></script>
   <script>
-    window.onload = function () {
+    checkLogin();
+    function checkLogin() {
       // 登陆验证
       fetch("./api/check-login.php", {
         //请求方法
@@ -91,12 +92,15 @@
         .then((data) => {
           if (data.status != 0) {
             window.location.href = "./login.html";
+          } else {
+            setArticleList();
           }
         })
         .catch((err) => {
           window.location.href = "./login.html";
         });
-
+    }
+    function setArticleList() {
       fetch("./api/article-list.php", {
         //请求方法
         method: "POST",
@@ -108,30 +112,46 @@
           return response.json();
         })
         .then((data) => {
-          addToList(data);
+          if (addToList(data)) {
+            setLayui();
+          }
         })
         .catch((err) => {
           layer.msg("数据异常", { icon: 2 });
         });
+    }
 
-      function addToList(data) {
-        var html_str = "";
-        for (let i = 0; i < data.length; i++) {
-          var element = data[i];
-          html_str += `<div class="item">
+    function addToList(data) {
+      var html_str = "";
+      for (let i = 0; i < data.length; i++) {
+        var element = data[i];
+        html_str +=
+          `<div class="item">
           <div class="title">
-            <a href="./update.html?id=`+ element.id +`">`+ element.title +`</a>
+            <a href="./update.html?id=` +
+          element.id +
+          `">` +
+          element.title +
+          `</a>
           </div>
           <div class="time">
-            <span>发布时间：`+ element.publish_time +`</span>
-            <span>修改时间：`+ element.update_time +`</span>
+            <span>发布时间：` +
+          element.publish_time +
+          `</span>
+            <span>修改时间：` +
+          element.update_time +
+          `</span>
           </div>
           <div class="state">
             <form class="layui-form top-form" action="">
               <div class="layui-form-item">
                 <label class="layui-form-label">置顶文章</label>
                 <div class="layui-input-block">
-                  <input `+ (element.toped=="1"?"checked":"") +` type="checkbox" name="top" lay-filter="top" value="`+ element.id +`" lay-skin="switch" />
+                  <input ` +
+          (element.toped == "1" ? "checked" : "") +
+          ` type="checkbox" name="top" lay-filter="top" value="` +
+          element.id +
+          `" lay-skin="switch" />
                 </div>
               </div>
             </form>
@@ -139,16 +159,22 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">隐藏文章</label>
                 <div class="layui-input-block">
-                  <input `+ (element.hided=="1"?"checked":"") +` type="checkbox" name="hide" lay-filter="hide" value="`+ element.id +`" lay-skin="switch" />
+                  <input ` +
+          (element.hided == "1" ? "checked" : "") +
+          ` type="checkbox" name="hide" lay-filter="hide" value="` +
+          element.id +
+          `" lay-skin="switch" />
                 </div>
               </div>
             </form>
           </div>
         </div>`;
-        }
-        document.getElementsByClassName("article-list")[0].innerHTML = html_str;
       }
+      document.getElementsByClassName("article-list")[0].innerHTML = html_str;
+      return true;
+    }
 
+    function setLayui() {
       layui.use("form", function () {
         var form = layui.form;
 
@@ -168,32 +194,32 @@
 
           statusChangeAjax(formData);
         });
-
-        function statusChangeAjax(dataOfSend) {
-          // 向后台传递表单数据
-          fetch("./api/status-change.php", {
-            //请求方法
-            method: "POST",
-            credentials: "include",
-            //请求体
-            body: JSON.stringify(dataOfSend),
-          })
-            .then((response) => {
-              return response.json();
-            })
-            .then((data) => {
-              if (data.status == 0) {
-                layer.msg("设置成功", { icon: 1 });
-              } else {
-                layer.msg("设置失败", { icon: 2 });
-                window.location.href = "./article-list.html";
-              }
-            })
-            .catch((err) => {
-              layer.msg("数据异常", { icon: 2 });
-            });
-        }
       });
-    };
+    }
+
+    function statusChangeAjax(dataOfSend) {
+      // 向后台传递表单数据
+      fetch("./api/status-change.php", {
+        //请求方法
+        method: "POST",
+        credentials: "include",
+        //请求体
+        body: JSON.stringify(dataOfSend),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status == 0) {
+            layer.msg("设置成功", { icon: 1 });
+          } else {
+            layer.msg("设置失败", { icon: 2 });
+            window.location.href = "./article-list.html";
+          }
+        })
+        .catch((err) => {
+          layer.msg("数据异常", { icon: 2 });
+        });
+    }
   </script>
 </html>

@@ -92,7 +92,8 @@
   </body>
   <script src="./layui/dist/layui.js"></script>
   <script>
-    window.onload = function () {
+    checkLogin();
+    function checkLogin() {
       // 登陆验证
       fetch("./api/check-login.php", {
         //请求方法
@@ -107,12 +108,16 @@
         .then((data) => {
           if (data.status != 0) {
             window.location.href = "./login.html";
+          } else {
+            setLayui();
           }
         })
         .catch((err) => {
           window.location.href = "./login.html";
         });
+    }
 
+    function setLayui() {
       layui.use(["form", "upload"], function () {
         var form = layui.form;
         var upload = layui.upload;
@@ -227,6 +232,6 @@
           return false;
         });
       });
-    };
+    }
   </script>
 </html>
