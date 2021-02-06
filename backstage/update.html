@@ -92,6 +92,7 @@
   </body>
   <script src="./layui/dist/layui.js"></script>
   <script>
+    checkLogin();
     function checkLogin() {
       // 登陆验证
       fetch("./api/check-login.php", {
@@ -107,6 +108,8 @@
         .then((data) => {
           if (data.status != 0) {
             window.location.href = "./login.html";
+          } else {
+            setLayui();
           }
         })
         .catch((err) => {
