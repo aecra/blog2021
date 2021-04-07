@@ -1,3 +1,4 @@
+var apiUrl = "https://2021.aecra.cn/release/show";
 function toTopChange() {
   var toTop = document.getElementsByClassName("to-top")[0];
   var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -30,11 +31,9 @@ var vmHotArticle = new Vue({
     articleList: [],
   },
   created: function () {
-    fetch("./api/hot-article.php", {
+    fetch(`${apiUrl}/hotArticle`, {
       //请求方法
-      method: "POST",
-      //请求体
-      body: "",
+      method: "GET",
     })
       .then((response) => {
         return response.json();

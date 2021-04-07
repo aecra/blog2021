@@ -1,3 +1,4 @@
+var apiUrl = "https://2021.aecra.cn/release/show";
 var vmArticle = new Vue({
   el: "#article-cards",
   data: {
@@ -7,11 +8,8 @@ var vmArticle = new Vue({
   created: function () {
     if (decodeURI(getGetParam()["q"])) {
       this.hasSearchData = true;
-      fetch("./api/search.php", {
-        method: "POST",
-        body: JSON.stringify({
-          q: decodeURI(getGetParam()["q"]),
-        }),
+      fetch(`${apiUrl}/search?q=${decodeURI(getGetParam()["q"])}`, {
+        method: "GET",
       })
         .then((response) => {
           return response.json();

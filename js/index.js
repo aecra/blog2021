@@ -1,3 +1,4 @@
+var apiUrl = "https://2021.aecra.cn/release/show";
 var vmMainArticleList = new Vue({
   el: "#article-cards",
   computed: {
@@ -19,9 +20,8 @@ var vmMainArticleList = new Vue({
       if (this.nomore) {
         // console.log("no more!");
       } else {
-        fetch("./api/article-list.php", {
-          method: "POST",
-          body: JSON.stringify({ start: this.start, step: this.step }),
+        fetch(`${apiUrl}/articleList?start=${this.start}&step=${this.step}`, {
+          method: "GET",
         })
           .then((response) => {
             return response.json();
@@ -42,8 +42,8 @@ var vmMainArticleList = new Vue({
     },
   },
   created: function () {
-    fetch("./api/toped-article.php", {
-      method: "POST",
+    fetch("${apiUrl}/topedArticle", {
+      method: "GET",
     })
       .then((response) => {
         return response.json();
@@ -52,9 +52,8 @@ var vmMainArticleList = new Vue({
         this.topedArticleList = res;
       });
 
-    fetch("./api/article-list.php", {
-      method: "POST",
-      body: JSON.stringify({ start: this.start, step: this.step }),
+    fetch(`${apiUrl}/articleList?start=${this.start}&step=${this.step}`, {
+      method: "GET",
     })
       .then((response) => {
         return response.json();

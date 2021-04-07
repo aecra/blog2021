@@ -1,3 +1,4 @@
+var apiUrl = "https://2021.aecra.cn/release/show";
 var vmArticle = new Vue({
   el: "#previer",
   data: {
@@ -11,9 +12,8 @@ var vmArticle = new Vue({
   },
   created: function () {
     if (getGetParam()["id"]) {
-      fetch("./api/article.php", {
-        method: "POST",
-        body: JSON.stringify({ id: getGetParam()["id"] }),
+      fetch(`${apiUrl}/article?id=${getGetParam()["id"]}`, {
+        method: "GET",
       })
         .then((response) => {
           return response.json();
@@ -62,7 +62,7 @@ function setArticleContent(data) {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return '<pre class="hljs"><code>' + hljs.highlight(lang, str, true).value + "</code></pre>";
-      } catch (__) {}
+      } catch (__) { }
     } else if (lang == "mermaid") {
       try {
         mermaid.parse(str);

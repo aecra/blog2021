@@ -58,15 +58,20 @@
   // box-shadow: 0 0 5px rgb(170, 170, 170);
 
   .img {
-    background-color: chartreuse;
     overflow: hidden;
 
-    img {
-      width: 100%;
-      transition: 0.2s;
-      @media (min-width: 992px) {
-        &:hover {
-          transform: scale(1.05);
+    a {
+      display: block;
+      font-size: 0;
+
+      img {
+        width: 100%;
+        transition: 0.2s;
+
+        @media (min-width: 992px) {
+          &:hover {
+            transform: scale(1.05);
+          }
         }
       }
     }
