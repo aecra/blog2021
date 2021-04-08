@@ -42,7 +42,7 @@ var vmMainArticleList = new Vue({
     },
   },
   created: function () {
-    fetch("${apiUrl}/topedArticle", {
+    fetch(`${apiUrl}/topedArticle`, {
       method: "GET",
     })
       .then((response) => {
