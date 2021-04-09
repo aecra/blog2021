@@ -41,7 +41,7 @@
             <div class="layui-form item">
               <label class="layui-form-label">上传图片</label>
               <div class="layui-input-block">
-                <button type="button" class="layui-btn" id="img-upload"><i class="layui-icon">&#xe67c;</i>上传图片</button>
+                <input type="file" class="layui-btn" id="img-upload" onchange="imgUpload(this)" />
               </div>
             </div>
             <div class="layui-form-item">
@@ -90,17 +90,23 @@
       </div>
     </div>
   </body>
+  <script src="./js-spark-md5.js"></script>
   <script src="./layui/dist/layui.js"></script>
+  <script src="https://unpkg.com/cos-js-sdk-v5/dist/cos-js-sdk-v5.min.js"></script>
   <script>
+    var apiUrl = "https://2021.aecra.cn/release/backstage/";
+    var imgUrl = "";
+    var cosExpiredTime = Math.ceil(new Date().getTime() / 1000);
+    var cos;
     checkLogin();
     function checkLogin() {
       // 登陆验证
-      fetch("./api/check-login.php", {
+      fetch(`${apiUrl}login`, {
         //请求方法
         method: "POST",
         credentials: "include",
         //请求体
-        body: "login-check",
+        body: "{}",
       })
         .then((response) => {
           return response.json();
@@ -117,44 +123,69 @@
         });
     }
 
-    function setLayui() {
-      layui.use(["form", "upload"], function () {
-        var form = layui.form;
-        var upload = layui.upload;
-        var imgUrl = "";
-        var published = false;
+    function imgUpload(e) {
+      // 初始化实例
+      if(cosExpiredTime < Math.ceil(new Date().getTime() / 1000)){
+        cos = new COS({
+          getAuthorization: function (options, callback) {
+            // 异步获取临时密钥
+            fetch(`${apiUrl}credential`, {
+              //请求方法
+              method: "POST",
+              credentials: "include",
+              body: "{}",
+            })
+              .then(data => {
+                return data.json();
+              })
+              .then(data => {
+                console.log(data);
+                var credentials = data?.credentials;
+                if (!data || !credentials) return console.error('credentials invalid');
+                cosExpiredTime = credentials.expiredTime;
+                
+                callback({
+                  TmpSecretId: credentials.tmpSecretId,
+                  TmpSecretKey: credentials.tmpSecretKey,
+                  XCosSecurityToken: credentials.sessionToken,
+                  StartTime: data.startTime,
+                  ExpiredTime: data.expiredTime,
+                })
+              })
+          }
+        })
+      }
 
-        // 图片上传事件处理
-        var indexUpLoad;
-        var uploadInst = upload.render({
-          elem: "#img-upload",
-          url: "./api/cover-img-upload.php",
-          accept: "images",
-          acceptMime: "image/*",
-          before: function () {
-            indexUpLoad = layer.load(2);
-          },
-          done: function (res) {
-            layer.close(indexUpLoad);
-            /*
-             * 0成功
-             * 1登陆状态失效
-             * 2图片上传错误
-             */
-            if (res.status == 0) {
-              layer.msg("图片上传成功", { icon: 1 });
-              imgUrl = res.src;
-            } else if (res.status == 1) {
-              layer.msg("登录状态失效", { icon: 2 });
-            } else {
-              layer.msg("后台图片上传失败", { icon: 2 });
-            }
-          },
-          error: function () {
-            layer.close(indexUpLoad);
-            layer.msg("请求异常", { icon: 2 });
-          },
+      const fileReader = new FileReader();
+      fileReader.readAsBinaryString(e.files[0]);
+      fileReader.onload = e1 => {
+        var title = SparkMD5.hashBinary(e1.target.result);
+        var fileType = /\.[^\.]+$/.exec(e.files[0].name)[0];
+        cos.putObject({
+          Bucket: 'static-1255835707',
+          Region: 'ap-beijing',
+          Key: `cover/${title}${fileType}`,
+          StorageClass: 'STANDARD',
+          Body: e.files[0],
+          onProgress: function (progressData) {
+            console.log(JSON.stringify(progressData));
+          }
+        }, function (err, data) {
+          imgUrl = `https://static.aecra.cn/cover/${title}${fileType}`;
+          if (data) {
+            layer.msg("图片上传成功", { icon: 1 });
+          } else {
+            layer.msg("图片上传失败", { icon: 2 });
+          }
         });
+      }
+      return false;
+    };
+
+    function setLayui() {
+      layui.use(["form"], function () {
+        var form = layui.form;
+        var published = false;
 
         // 表单提交事件处理
         form.on("submit(formsub)", function (data) {
@@ -199,7 +230,7 @@
 
           // 向后台传递表单数据
           var index = layer.load(2);
-          fetch("./api/publish.php", {
+          fetch(`${apiUrl}/publish`, {
             //请求方法
             method: "POST",
             credentials: "include",

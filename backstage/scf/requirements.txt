@@ -1,0 +1,2 @@
+qcloud-python-sts
+psycopg2

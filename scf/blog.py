@@ -1,14 +1,16 @@
+import os
+
 import psycopg2
 import psycopg2.extras
 
 
 def get_config():
     return {
-        'user': "",
-        'password': "",
-        'host': "",
-        'port': "",
-        'database': ""
+        'user': os.environ['SQL_USER'],
+        'password': os.environ['SQL_PASSWOED'],
+        'host': os.environ['SQL_HOST'],
+        'port': os.environ['SQL_PORT'],
+        'database': os.environ['SQL_DATABASE']
     }
 
 

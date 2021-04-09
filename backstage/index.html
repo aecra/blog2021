@@ -70,15 +70,16 @@
   </body>
   <script src="./layui/dist/layui.js"></script>
   <script>
+    var apiUrl = "https://2021.aecra.cn/release/backstage/";
     checkLogin();
     function checkLogin() {
       // 登陆验证
-      fetch("./api/check-login.php", {
+      fetch(`${apiUrl}login`, {
         //请求方法
         method: "POST",
         credentials: "include",
         //请求体
-        body: "login-check",
+        body: "{}",
       })
         .then((response) => {
           return response.json();
