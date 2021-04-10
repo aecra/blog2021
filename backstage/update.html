@@ -171,8 +171,8 @@
             console.log(JSON.stringify(progressData));
           }
         }, function (err, data) {
-          imgUrl = `https://static.aecra.cn/cover/${title}${fileType}`;
           if (data) {
+            imgUrl = `https://static.aecra.cn/cover/${title}${fileType}`;
             layer.msg("图片上传成功", { icon: 1 });
           } else {
             layer.msg("图片上传失败", { icon: 2 });
@@ -185,7 +185,6 @@
     function setLayui() {
       layui.use(["form"], function () {
         var form = layui.form;
-        var imgUrl = "";
         var published = false;
         var originData;
 

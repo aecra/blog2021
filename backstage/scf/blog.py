@@ -29,7 +29,7 @@ def get_cursor():
 
 def get_credential():
     config = {
-        'url': 'https:#sts.tencentcloudapi.com/',
+        'url': 'https://sts.tencentcloudapi.com/',
         'domain': 'sts.tencentcloudapi.com',
         'duration_seconds': 60,
         'secret_id': os.environ['COS_SECRET_ID'],
@@ -100,11 +100,13 @@ def publish(cookie, data):
 
         # 获取标签id
         cursor.execute('select * from tagstb where tagname=%s', [tag])
-        tagid = cursor.fetchAll()[0]['id']
+        tagid = cursor.fetchall()[0]['id']
 
         # 向映射表中插入数据
         cursor.execute(
-            'insert into tagmaptb(tagid,articleid) values(:tagid,:articleid)', [tagid, a_id])
+            'insert into tagmaptb(tagid,articleid) values(%s,%s)', [tagid, a_id])
+    
+    cursor.execute('commit')
     return {'status': 0}
 
 
@@ -134,6 +136,7 @@ def status_change(cookie, data):
         cursor.execute('update articletb set hided=%s where id=%s',
                        [status, articleid])
 
+    cursor.execute('commit')
     return {'status': 0}
 
 
@@ -213,4 +216,6 @@ def update(cookie, data):
             tagid = cursor.fetchall()[0]['id']
             cursor.execute(
                 'insert into tagmaptb (tagid, articleid) values(%s,%s)', [tagid, a_id])
+    
+    cursor.execute('commit')
     return {'status': 0}
