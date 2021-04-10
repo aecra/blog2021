@@ -1,6 +1,34 @@
-var apiUrl = "https://2021.aecra.cn/release/show";
-var vmArticle = new Vue({
-  el: "#article-cards",
+/* eslint-disable no-undef */
+// const apiUrl = 'https://2021.aecra.cn/release/show';
+
+function setPageTitle(data) {
+  document.title = data;
+}
+
+function setPrevierTitle(data) {
+  const previerTitle = document.getElementsByClassName('previer-title')[0];
+  previerTitle.innerHTML = data;
+}
+
+function getGetParam() {
+  const url = window.document.location.href.toString();
+  let u = url.split('?');
+  if (typeof u[1] === 'string') {
+    u = u[1].split('&');
+    let get = {};
+
+    u.forEach((element) => {
+      const j = element.split('=');
+      get = Object.assign(get, { [j[0]]: j[1] });
+    });
+    return get;
+  }
+  return {};
+}
+
+// eslint-disable-next-line no-new
+new Vue({
+  el: '#article-cards',
   data: {
     articleList: [],
     start: 0,
@@ -8,21 +36,19 @@ var vmArticle = new Vue({
     nomore: false,
   },
   methods: {
-    getMoreArticles: function () {
+    getMoreArticles() {
       if (this.nomore) {
         // console.log("no more!");
       } else {
-        fetch(`${apiUrl}/tag?tag=${decodeURI(getGetParam()["tag"])}&start=${this.start}step=${this.step}`, {
-          method: "GET",
+        fetch(`${apiUrl}/tag?tag=${decodeURI(getGetParam().tag)}&start=${this.start}step=${this.step}`, {
+          method: 'GET',
         })
-          .then((response) => {
-            return response.json();
-          })
+          .then((response) => response.json())
           .then((res) => {
-            if (this.start == 0 && res.length == 0) {
+            if (this.start === 0 && res.length === 0) {
               // window.location.href = "./";
             }
-            if (res.length == 0) {
+            if (res.length === 0) {
               this.nomore = true;
             } else {
               this.articleList.push(...res);
@@ -35,19 +61,17 @@ var vmArticle = new Vue({
       }
     },
   },
-  created: function () {
-    if (decodeURI(getGetParam()["tag"])) {
-      fetch(`${apiUrl}/tag?tag=${decodeURI(getGetParam()["tag"])}&start=${this.start}&step=${this.step}`, {
-        method: "GET",
+  created() {
+    if (decodeURI(getGetParam().tag)) {
+      fetch(`${apiUrl}/tag?tag=${decodeURI(getGetParam().tag)}&start=${this.start}&step=${this.step}`, {
+        method: 'GET',
       })
-        .then((response) => {
-          return response.json();
-        })
+        .then((response) => response.json())
         .then((res) => {
-          if (this.start == 0 && res.length == 0) {
+          if (this.start === 0 && res.length === 0) {
             // window.location.href = "./";
           }
-          if (res.length == 0) {
+          if (res.length === 0) {
             this.nomore = true;
           } else {
             this.articleList.push(...res);
@@ -56,36 +80,11 @@ var vmArticle = new Vue({
               this.nomore = true;
             }
           }
-          setPageTitle("标签：" + decodeURI(getGetParam()["tag"]) + " | AECRA BLOG");
-          setPrevierTitle("标签：" + decodeURI(getGetParam()["tag"]));
+          setPageTitle(`标签：${decodeURI(getGetParam().tag)} | AECRA BLOG`);
+          setPrevierTitle(`标签：${decodeURI(getGetParam().tag)}`);
         });
     } else {
       // window.location.href = "./";
     }
   },
 });
-
-function setPageTitle(data) {
-  document.title = data;
-}
-
-function setPrevierTitle(data) {
-  var previerTitle = document.getElementsByClassName("previer-title")[0];
-  previerTitle.innerHTML = data;
-}
-
-function getGetParam() {
-  var url = window.document.location.href.toString();
-  var u = url.split("?");
-  if (typeof u[1] == "string") {
-    u = u[1].split("&");
-    var get = {};
-    for (var i in u) {
-      var j = u[i].split("=");
-      get[j[0]] = j[1];
-    }
-    return get;
-  } else {
-    return {};
-  }
-}

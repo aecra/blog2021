@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AECRA 博客后台</title>
-    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
-    <link rel="stylesheet" href="./layui/dist/css/layui.css" />
-    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/layui/2.5.7/css/layui.min.css" integrity="sha512-+V5QIHvfXMjtomyr134OIvhZfJ0KHWwQc2D0wdVWcYqoe0KMTS0g4UpKN40Kuow4v8ihhehXAo+Hnz4OnIBpbw==" crossorigin="anonymous" />    <link rel="stylesheet" href="./css/index.css" />
   </head>
   <body>
     <div class="previer">
@@ -40,7 +39,7 @@
           </a>
         </div>
         <div class="item layui-col-xs6 layui-col-sm4 layui-col-md3 layui-col-lg2">
-          <a href="./api/login-out.php">
+          <a onclick="loginOut()">
             <div class="inner">
               <img class="inner-img" src="./images/login-out.png" alt="退出登录" />
               <p class="inner-title">退出登录</p>
@@ -55,7 +54,7 @@
         <div class="layui-container">
           <div class="left layui-col-xs12 layui-col-sm12 layui-col-md8 layui-col-lg8">
             <div class="logo layui-col-xs12 layui-col-sm4 layui-col-md5 layui-col-lg4">
-              <img src="../logo.png" alt="logo" />
+              <img src="./images/logo.png" alt="logo" />
             </div>
             <div class="description layui-col-xs12 layui-col-sm8 layui-col-md7 layui-col-lg8">
               <p class="title">AECRA 博客后台</p>
@@ -68,39 +67,6 @@
       </div>
     </div>
   </body>
-  <script src="./layui/dist/layui.js"></script>
-  <script>
-    var apiUrl = "https://2021.aecra.cn/release/backstage/";
-    checkLogin();
-    function checkLogin() {
-      // 登陆验证
-      fetch(`${apiUrl}login`, {
-        //请求方法
-        method: "POST",
-        credentials: "include",
-        //请求体
-        body: "{}",
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (data.status != 0) {
-            window.location.href = "./login.html";
-          }
-        })
-        .catch((err) => {
-          window.location.href = "./login.html";
-        });
-    }
-
-    setInterval(function () {
-      var img = document.getElementsByClassName("inner-img")[0];
-      var titles = document.getElementsByClassName("inner-title");
-      for (i = 0; i < titles.length; i++) {
-        titles[i].style.lineHeight = img.clientHeight / 3 + "px";
-        // console.log(titles[i].style.lineHeight,img.style.height);
-      }
-    }, 200);
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/layui/2.5.7/layui.all.min.js" integrity="sha512-CE9tJAa16cAOSusoYiew0yr5KzGE9f+IjOQkLJBuHTzebBxpkbV6kS1VbTCFsJFQGLlX271/X8ATZ7TJNsd4Hw==" crossorigin="anonymous"></script>
+  <script src="./js/index.js"></script>
 </html>

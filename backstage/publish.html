@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>文章发布 | AECRA 博客后台</title>
-    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
-    <link rel="stylesheet" href="./layui/dist/css/layui.css" />
-    <link rel="stylesheet" href="./css/publish.css" />
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/layui/2.5.7/css/layui.min.css" integrity="sha512-+V5QIHvfXMjtomyr134OIvhZfJ0KHWwQc2D0wdVWcYqoe0KMTS0g4UpKN40Kuow4v8ihhehXAo+Hnz4OnIBpbw==" crossorigin="anonymous" />    <link rel="stylesheet" href="./css/publish.css" />
   </head>
   <body>
     <div class="previer">
@@ -77,7 +76,7 @@
         <div class="layui-container">
           <div class="left layui-col-xs12 layui-col-sm12 layui-col-md8 layui-col-lg8">
             <div class="logo layui-col-xs12 layui-col-sm4 layui-col-md5 layui-col-lg4">
-              <img src="../logo.png" alt="logo" />
+              <img src="./images/logo.png" alt="logo" />
             </div>
             <div class="description layui-col-xs12 layui-col-sm8 layui-col-md7 layui-col-lg8">
               <p class="title">AECRA 博客后台</p>
@@ -90,179 +89,8 @@
       </div>
     </div>
   </body>
-  <script src="./js-spark-md5.js"></script>
-  <script src="./layui/dist/layui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/layui/2.5.7/layui.all.min.js" integrity="sha512-CE9tJAa16cAOSusoYiew0yr5KzGE9f+IjOQkLJBuHTzebBxpkbV6kS1VbTCFsJFQGLlX271/X8ATZ7TJNsd4Hw==" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/spark-md5/3.0.0/spark-md5.min.js"></script>
   <script src="https://unpkg.com/cos-js-sdk-v5/dist/cos-js-sdk-v5.min.js"></script>
-  <script>
-    var apiUrl = "https://2021.aecra.cn/release/backstage/";
-    var imgUrl = "";
-    var cosExpiredTime = Math.ceil(new Date().getTime() / 1000);
-    var cos;
-    checkLogin();
-    function checkLogin() {
-      // 登陆验证
-      fetch(`${apiUrl}login`, {
-        //请求方法
-        method: "POST",
-        credentials: "include",
-        //请求体
-        body: "{}",
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (data.status != 0) {
-            window.location.href = "./login.html";
-          } else {
-            setLayui();
-          }
-        })
-        .catch((err) => {
-          window.location.href = "./login.html";
-        });
-    }
-
-    function imgUpload(e) {
-      // 初始化实例
-      if(cosExpiredTime < Math.ceil(new Date().getTime() / 1000)){
-        cos = new COS({
-          getAuthorization: function (options, callback) {
-            // 异步获取临时密钥
-            fetch(`${apiUrl}credential`, {
-              //请求方法
-              method: "POST",
-              credentials: "include",
-              body: "{}",
-            })
-              .then(data => {
-                return data.json();
-              })
-              .then(data => {
-                console.log(data);
-                var credentials = data?.credentials;
-                if (!data || !credentials) return console.error('credentials invalid');
-                cosExpiredTime = credentials.expiredTime;
-                
-                callback({
-                  TmpSecretId: credentials.tmpSecretId,
-                  TmpSecretKey: credentials.tmpSecretKey,
-                  XCosSecurityToken: credentials.sessionToken,
-                  StartTime: data.startTime,
-                  ExpiredTime: data.expiredTime,
-                })
-              })
-          }
-        })
-      }
-
-      const fileReader = new FileReader();
-      fileReader.readAsBinaryString(e.files[0]);
-      fileReader.onload = e1 => {
-        var title = SparkMD5.hashBinary(e1.target.result);
-        var fileType = /\.[^\.]+$/.exec(e.files[0].name)[0];
-        cos.putObject({
-          Bucket: 'static-1255835707',
-          Region: 'ap-beijing',
-          Key: `cover/${title}${fileType}`,
-          StorageClass: 'STANDARD',
-          Body: e.files[0],
-          onProgress: function (progressData) {
-            console.log(JSON.stringify(progressData));
-          }
-        }, function (err, data) {
-          if (data) {
-            imgUrl = `https://static.aecra.cn/cover/${title}${fileType}`;
-            layer.msg("图片上传成功", { icon: 1 });
-          } else {
-            layer.msg("图片上传失败", { icon: 2 });
-          }
-        });
-      }
-      return false;
-    };
-
-    function setLayui() {
-      layui.use(["form"], function () {
-        var form = layui.form;
-        var published = false;
-
-        // 表单提交事件处理
-        form.on("submit(formsub)", function (data) {
-          if (published) {
-            layer.msg("文章已发布，请勿重复提交", { icon: 7 });
-            return false;
-          }
-
-          published = true;
-          var formData = data.field;
-          formData.top = formData.top || "false";
-          formData.hide = formData.hide || "false";
-          formData.imgUrl = imgUrl;
-
-          //表单校验，处理tags
-          if (!new RegExp("^.{1,70}$").test(formData.title)) {
-            layer.msg("文章标题过长", { icon: 2 });
-            return (published = false);
-          }
-          {
-            var result = formData.tags.split(/[,，]/);
-            formData.tags = [];
-            for (var i = 0; i < result.length; i++) {
-              result[i] = result[i].replace(/(^\s*)|(\s*$)/g, "");
-              if (result[i].length >= 2 && result[i].length <= 15) {
-                formData.tags.push(result[i]);
-              }
-            }
-            if (result.length != formData.tags.length) {
-              layer.msg("请正确输入标签", { icon: 2 });
-              return (published = false);
-            }
-          }
-          if (formData.imgUrl == "") {
-            layer.msg("未上传图片", { icon: 2 });
-            return (published = false);
-          }
-          if (formData.content.length < 50) {
-            layer.msg("文章内容过少", { icon: 2 });
-            return (published = false);
-          }
-
-          // 向后台传递表单数据
-          var index = layer.load(2);
-          fetch(`${apiUrl}publish`, {
-            //请求方法
-            method: "POST",
-            credentials: "include",
-            //请求体
-            body: JSON.stringify(formData),
-          })
-            .then((response) => {
-              layer.close(index);
-              return response.json();
-            })
-            .then((data) => {
-              if (data.status == 0) {
-                layer.msg("发布成功", { icon: 1 });
-                setTimeout(function () {
-                  window.location.href = "./";
-                }, 500);
-              } else if (data.status == 1) {
-                layer.msg("登陆状态失效", { icon: 2 });
-                published = false;
-              } else {
-                layer.msg("发布失败", { icon: 2 });
-                published = false;
-              }
-            })
-            .catch((err) => {
-              layer.msg("数据异常", { icon: 2 });
-              published = false;
-            });
-
-          return false;
-        });
-      });
-    }
-  </script>
+  <script src="./js/publish.js"></script>
 </html>

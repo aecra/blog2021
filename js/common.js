@@ -1,43 +1,44 @@
-var apiUrl = "https://2021.aecra.cn/release/show";
+/* eslint-disable no-undef */
+const apiUrl = 'https://2021.aecra.cn/release/show';
 function toTopChange() {
-  var toTop = document.getElementsByClassName("to-top")[0];
-  var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  var scrolledHeight = document.documentElement.scrollTop;
-  toTop.style.display = scrolledHeight <= screenHeight ? "none" : "block";
+  const toTop = document.getElementsByClassName('to-top')[0];
+  const screenHeight = (window.innerHeight
+    || document.documentElement.clientHeight || document.body.clientHeight);
+  const scrolledHeight = document.documentElement.scrollTop;
+  toTop.style.display = scrolledHeight <= screenHeight ? 'none' : 'block';
 }
 
-document.onscroll = function () {
+document.onscroll = () => {
   toTopChange();
 };
 
-document.getElementsByClassName("to-top")[0].onclick = function () {
-  var itemTime = 8;
+document.getElementsByClassName('to-top')[0].onclick = () => {
+  const itemTime = 8;
 
-  var timer = setInterval(() => {
+  const timer = setInterval(() => {
     if (document.documentElement.scrollTop <= 0) {
       document.documentElement.scrollTop = 0;
       clearInterval(timer);
     }
-    var itemTemp = document.documentElement.scrollTop * 0.05;
+    let itemTemp = document.documentElement.scrollTop * 0.05;
     itemTemp = itemTemp < 1 ? 1 : itemTemp;
     // console.log(itemTemp, document.documentElement.scrollTop);
     document.documentElement.scrollTop -= itemTemp;
   }, itemTime);
 };
 
-var vmHotArticle = new Vue({
-  el: "#hot-article",
+// eslint-disable-next-line no-new
+new Vue({
+  el: '#hot-article',
   data: {
     articleList: [],
   },
-  created: function () {
+  created() {
     fetch(`${apiUrl}/hotArticle`, {
-      //请求方法
-      method: "GET",
+      // 请求方法
+      method: 'GET',
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((res) => {
         this.articleList = res;
       });

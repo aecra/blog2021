@@ -1,0 +1,25 @@
+{
+  "name": "blog2021",
+  "version": "1.0.0",
+  "description": "一份简洁的博客系统",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aecra/blog2021.git"
+  },
+  "author": "aecra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aecra/blog2021/issues"
+  },
+  "homepage": "https://github.com/aecra/blog2021#readme",
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "env": {
+      "browser": true
+    }
+  },
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^14.2.1"
+  }
+}
