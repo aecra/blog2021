@@ -91,6 +91,7 @@ def get_article(cursor, data):
         result['tags'].append(item['tagname'])
         item = cursor.fetchone()
 
+    cursor.execute('commit')
     return result
 
 
