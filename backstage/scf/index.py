@@ -35,14 +35,17 @@ def main_handler(event, context):
     data = json.loads(event['body'])
     logger.info('get cookie')
     # 生成cookie的数据
-    if 'cookie' in event['headers']:
+    if 'username' in data and 'password' in data:
+        cookie['username'] = data['username']
+        cookie['password'] = data['password']
+    elif 'cookie' in event['headers']:
         cookie = dict([l.split("=", 1)
                        for l in event['headers']['cookie'].split("; ")])
         cookie['username'] = 'username' in cookie and cookie['username'] or 'aecra'
         cookie['password'] = 'password' in cookie and cookie['password'] or ''
     else:
-        cookie['username'] = 'username' in data and data['username'] or 'aecra'
-        cookie['password'] = 'password' in data and data['password'] or ''
+        cookie['username'] = 'aecra'
+        cookie['password'] = ''
 
     if 'content' in event['pathParameters']:
         content = event['pathParameters']['content']
