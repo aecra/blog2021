@@ -106,7 +106,10 @@ def main_handler(event, context):
         'statusCode': 200,
         'headers': {
             'Content-Type': 'text/html; charset=UTF-8',
-            'Set-Cookie': 'password=' + cookie['password'] + '; ' + cookie_age + '; ' + 'SameSite=None' + '; ' + 'Secure',
+            'Set-Cookie': [
+                'password=' + cookie['password'] + '; ' + cookie_age + '; ' + 'SameSite=None' + '; ' + 'Secure',
+                'username=' + cookie['username'] + '; ' + cookie_age + '; ' + 'SameSite=None' + '; ' + 'Secure'
+                ],
         },
         'body': json.dumps(result, cls=JsonCustomEncoder)
     }
