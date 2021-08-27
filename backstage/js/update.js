@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const apiUrl = 'https://2021.aecra.cn/release/backstage/';
+const apiUrl = 'https://api.aecra.cn/release/blog2021/backstage/';
 let imgUrl = '';
 let cosExpiredTime = Math.ceil(new Date().getTime() / 1000);
 let cos;

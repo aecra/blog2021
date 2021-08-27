@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const apiUrl = 'https://2021.aecra.cn/release/show';
+const apiUrl = 'https://api.aecra.cn/release/blog2021/show';
 function toTopChange() {
   const toTop = document.getElementsByClassName('to-top')[0];
   const screenHeight = (window.innerHeight

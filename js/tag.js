@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-// const apiUrl = 'https://2021.aecra.cn/release/show';
+// const apiUrl = 'https://api.aecra.cn/release/blog2021/show';
 
 function setPageTitle(data) {
   document.title = data;
