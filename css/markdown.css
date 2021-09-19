@@ -171,6 +171,10 @@
   font-size: 14px;
   line-height: 20px;
 }
+.markdown .hljs code,
+.markdown pre code {
+  background-color: rgba(0, 0, 0, 0);
+}
 .markdown .hljs::-webkit-scrollbar,
 .markdown pre::-webkit-scrollbar {
   display: none;
