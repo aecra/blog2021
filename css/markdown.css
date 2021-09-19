@@ -1,7 +1,8 @@
 .markdown {
-  font-size: 16px;
+  font-size: 17px;
   background: #fff;
-  padding: 20px 15px 50px;
+  padding: 20px 30px 50px;
+  line-height: 1.85;
 }
 .markdown h1,
 .markdown h2,
@@ -10,8 +11,11 @@
 .markdown h5,
 .markdown h6 {
   position: relative;
+  margin-left: -30px;
   margin-top: 1em;
   margin-bottom: 1em;
+  padding-left: 30px;
+  border-left: #34495e 4px solid;
   font-weight: bold;
   line-height: 1.4em;
 }
@@ -40,6 +44,9 @@
 .markdown hr {
   border: 1px solid #ddd;
 }
+.markdown p {
+  margin: 1.5em 0;
+}
 .markdown a {
   text-decoration: none;
   color: #258fb8;
@@ -51,6 +58,10 @@
 .markdown ul,
 .markdown ol {
   padding-left: 2em;
+}
+.markdown ul p,
+.markdown ol p {
+  margin: 1em 0;
 }
 .markdown .task-list {
   padding-left: 2em;
@@ -69,18 +80,23 @@
 }
 .markdown table th {
   font-weight: bold;
-  border-bottom: 3px solid #ddd;
-  padding-bottom: 0.5em;
+  border: 1px solid #dadada;
+  padding: 4px 10px;
 }
 .markdown table td {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
+  border: 1px solid #dadada;
+  padding: 4px 10px;
+}
+.markdown table tbody > :nth-child(2n) {
+  background-color: #EFEFEE;
 }
 .markdown blockquote {
-  border-left: 5px solid #ddd;
-  padding-left: 0.5em;
+  margin-left: -30px;
+  margin-right: -30px;
+  padding: 15px 30px;
   color: #555;
-  font-size: 15px;
+  font-size: 16px;
+  background-color: #F8F8F8;
 }
 .markdown blockquote blockquote {
   padding-right: 0;
@@ -88,7 +104,10 @@
 .markdown .md-fences,
 .markdown code,
 .markdown tt {
-  color: #5a8a8a;
+  color: #808080;
+  padding: 2px 4px;
+  background-color: #E0E0E0;
+  border-radius: 3px;
 }
 .markdown .md-fences {
   margin: 15px auto;
@@ -143,11 +162,12 @@
 }
 .markdown .hljs,
 .markdown pre {
+  margin: 30px -30px;
   display: block;
   overflow-x: auto;
   background: #1c1d21;
   color: #ffffff;
-  padding: 1em;
+  padding: 1em 30px;
   font-size: 14px;
   line-height: 20px;
 }

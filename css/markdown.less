@@ -1,8 +1,9 @@
 .markdown {
-  font-size: 16px;
+  font-size: 17px;
   background: #fff;
   // color: #555;
-  padding: 20px 15px 50px;
+  padding: 20px 30px 50px;
+  line-height: 1.85;
 
   h1,
   h2,
@@ -11,8 +12,11 @@
   h5,
   h6 {
     position: relative;
+    margin-left: -30px;
     margin-top: 1em;
     margin-bottom: 1em;
+    padding-left: 30px;
+    border-left: rgb(52, 73, 94) 4px solid;
     font-weight: bold;
     line-height: 1.4em;
   }
@@ -41,6 +45,9 @@
   hr {
     border: 1px solid #ddd;
   }
+  p {
+    margin: 1.5em 0;
+  }
   a {
     text-decoration: none;
     color: #258fb8;
@@ -52,6 +59,9 @@
   ul,
   ol {
     padding-left: 2em;
+    p {
+      margin: 1em 0;
+    }
   }
   .task-list {
     padding-left: 2em;
@@ -70,18 +80,23 @@
   }
   table th {
     font-weight: bold;
-    border-bottom: 3px solid #ddd;
-    padding-bottom: 0.5em;
+    border: 1px solid rgb(218, 218, 218);
+    padding: 4px 10px;
   }
   table td {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
+    border: 1px solid rgb(218, 218, 218);
+    padding: 4px 10px;
+  }
+  table tbody>:nth-child(2n) {
+    background-color: #EFEFEE;
   }
   blockquote {
-    border-left: 5px solid #ddd;
-    padding-left: 0.5em;
+    margin-left: -30px;
+    margin-right: -30px;
+    padding: 15px 30px;
     color: #555;
-    font-size: 15px;
+    font-size: 16px;
+    background-color: #F8F8F8;
   }
   blockquote blockquote {
     padding-right: 0;
@@ -89,7 +104,10 @@
   .md-fences,
   code,
   tt {
-    color: #5a8a8a;
+    color: rgb(128, 128, 128);
+    padding: 2px 4px;
+    background-color: #E0E0E0;
+    border-radius: 3px;
   }
   .md-fences {
     margin: 15px auto;
@@ -146,11 +164,12 @@
   }
   .hljs,
   pre {
+    margin: 30px -30px;
     display: block;
     overflow-x: auto;
     background: #1c1d21;
     color: #ffffff;
-    padding: 1em;
+    padding: 1em 30px;
     font-size: 14px;
     line-height: 20px;
     &::-webkit-scrollbar {
